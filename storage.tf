@@ -1,7 +1,15 @@
 data "archive_file" "function_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/function_sources"
+  source_dir  = "${path.module}/mercury"
   output_path = "${path.module}/function.zip"
+
+  excludes = [
+    ".env",
+    "pyproject.toml",
+    "README.md",
+    "poetry.lock",
+    "tests/**",
+  ]
 }
 
 resource "google_storage_bucket" "chatgpt_function_bucket" {
