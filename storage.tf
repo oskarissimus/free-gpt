@@ -9,6 +9,7 @@ data "archive_file" "function_zip" {
     "README.md",
     "poetry.lock",
     "tests/**",
+    "__pycache__/**",
   ]
 }
 

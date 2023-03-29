@@ -10,3 +10,4 @@ class Settings(BaseSettings):
     instance_username: str
     gcs_bucket_name: str
     openai_api_key: str
+    project_id: str

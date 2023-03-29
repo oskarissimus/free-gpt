@@ -40,9 +40,10 @@ resource "google_pubsub_topic" "chatgpt_topic" {
 }
 
 resource "google_compute_instance" "executor_instance" {
-  name         = "executor-instance"
-  machine_type = "f1-micro"
-  zone         = var.zone
+  name                = "executor-instance"
+  machine_type        = "f1-micro"
+  zone                = var.zone
+  deletion_protection = false
   metadata = {
     ssh-keys = "${var.instance_username}:${file("gce_ssh_key.pub")}"
   }
@@ -73,8 +74,9 @@ resource "google_bigquery_dataset" "chatgpt_dataset" {
 }
 
 resource "google_bigquery_table" "executions" {
-  dataset_id = google_bigquery_dataset.chatgpt_dataset.dataset_id
-  table_id   = "executions"
+  dataset_id          = google_bigquery_dataset.chatgpt_dataset.dataset_id
+  table_id            = "executions"
+  deletion_protection = false
 
   schema = jsonencode([
     {
@@ -101,8 +103,9 @@ resource "google_bigquery_table" "executions" {
 }
 
 resource "google_bigquery_table" "chat" {
-  dataset_id = google_bigquery_dataset.chatgpt_dataset.dataset_id
-  table_id   = "chat"
+  dataset_id          = google_bigquery_dataset.chatgpt_dataset.dataset_id
+  table_id            = "chat"
+  deletion_protection = false
 
   schema = jsonencode([
     {
