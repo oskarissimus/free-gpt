@@ -3,6 +3,7 @@ from mercury.bigquery_client import BigqueryClient
 from mercury.ssh_client import SshClient
 from mercury.openai_client import OpenaiClient
 from mercury.utils import extract_code
+import logging
 
 
 settings = Settings()
@@ -10,8 +11,12 @@ bigquery_client = BigqueryClient(settings)
 ssh_client = SshClient(settings)
 openai_client = OpenaiClient(settings)
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 def chatgpt_scheduler(event, context):
+    logger.info("Function triggered by scheduler.")
     last_executed_code = bigquery_client.get_last_executed_code()
 
     prompt = f"I received this code from the last execution: {last_executed_code}. Please provide me with the next code to execute to realize your goal."

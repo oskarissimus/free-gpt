@@ -1,6 +1,6 @@
 data "archive_file" "function_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/mercury"
+  source_dir  = "${path.module}/../mercury"
   output_path = "${path.module}/function.zip"
 
   excludes = [
@@ -10,6 +10,7 @@ data "archive_file" "function_zip" {
     "poetry.lock",
     "tests/**",
     "__pycache__/**",
+    ".pytest_cache/**",
   ]
 }
 
