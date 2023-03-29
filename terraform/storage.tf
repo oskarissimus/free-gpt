@@ -19,13 +19,8 @@ resource "google_storage_bucket" "chatgpt_function_bucket" {
   location = var.region
 }
 
-resource "google_storage_bucket" "chatgpt_response_bucket" {
-  name     = "chatgpt-response-bucket-${random_string.bucket_suffix.result}"
-  location = var.region
-}
-
 resource "google_storage_bucket_object" "chatgpt_function_archive" {
-  name   = "function.zip"
+  name   = "function-${data.archive_file.function_zip.output_md5}.zip"
   bucket = google_storage_bucket.chatgpt_function_bucket.name
   source = data.archive_file.function_zip.output_path
 }

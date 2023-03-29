@@ -17,7 +17,6 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
 
   environment_variables = {
     OPENAI_API_KEY      = var.openai_api_key
-    GCS_BUCKET_NAME     = google_storage_bucket.chatgpt_response_bucket.name
     INSTANCE_IP         = google_compute_instance.executor_instance.network_interface.0.access_config.0.nat_ip
     PRIVATE_KEY_CONTENT = file("gce_ssh_key")
     INSTANCE_USERNAME   = var.instance_username
