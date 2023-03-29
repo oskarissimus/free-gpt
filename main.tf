@@ -15,8 +15,11 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
   entry_point           = "chatgpt_scheduler"
 
   environment_variables = {
-    OPENAI_API_KEY  = var.openai_api_key
-    GCS_BUCKET_NAME = google_storage_bucket.chatgpt_response_bucket.name
+    OPENAI_API_KEY      = var.openai_api_key
+    GCS_BUCKET_NAME     = google_storage_bucket.chatgpt_response_bucket.name
+    INSTANCE_IP         = google_compute_instance.executor_instance.network_interface.0.access_config.0.nat_ip
+    PRIVATE_KEY_CONTENT = file("gce_ssh_key")
+    SSH_USERNAME        = "your_username" # Usually 'debian' for Debian-based images
   }
 
   event_trigger {
@@ -29,4 +32,33 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
 resource "google_pubsub_topic" "chatgpt_topic" {
   project = var.project_id
   name    = "chatgpt-topic"
+}
+
+resource "google_compute_instance" "executor_instance" {
+  name         = "executor-instance"
+  machine_type = "f1-micro"
+  zone         = var.zone
+  metadata = {
+    ssh-keys = "${var.instance_username}:${file("gce_ssh_key.pub")}"
+  }
+  boot_disk {
+    initialize_params {
+      image = "projects/debian-cloud/global/images/family/debian-11"
+    }
+  }
+
+  network_interface {
+    network = "default"
+
+    access_config {
+      // Ephemeral external IP
+    }
+  }
+
+  service_account {
+    scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
 }

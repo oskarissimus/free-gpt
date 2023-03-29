@@ -20,7 +20,16 @@ resource "google_project_service" "cloudscheduler" {
 
   disable_dependent_services = true
   disable_on_destroy         = false
-  
+
+}
+
+resource "google_project_service" "compute" {
+  project = var.project_id
+  service = "compute.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy         = false
+
 }
 
 resource "google_project_iam_member" "cloudbuild_storage_object_viewer" {
@@ -34,6 +43,7 @@ resource "time_sleep" "wait_for_services" {
     google_project_service.cloudfunctions,
     google_project_service.cloudbuild,
     google_project_service.cloudscheduler,
+    google_project_service.compute,
   ]
   create_duration = "5m"
 }

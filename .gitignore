@@ -6,3 +6,5 @@ terraform.tfstate
 terraform.tfstate.backup
 function.zip
 .env
+gce_ssh_key
+gce_ssh_key.pub
