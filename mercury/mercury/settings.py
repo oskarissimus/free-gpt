@@ -8,3 +8,4 @@ class Settings(BaseSettings):
     private_key_content: str
     instance_username: str
     gcs_bucket_name: str
+    openai_api_key: str

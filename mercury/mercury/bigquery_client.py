@@ -1,5 +1,6 @@
 from google.cloud import bigquery
 from mercury.settings import Settings
+import datetime
 
 
 class BigqueryClient:
@@ -31,7 +32,7 @@ class BigqueryClient:
 
         return last_executed_code if last_executed_code is not None else "..."
 
-    def insert_execution_record(self, input_code, output, error_output, timestamp):
+    def insert_execution_record(self, input_code, output, error_output):
         table_ref = self.bigquery_client.dataset(self.dataset_id).table(self.table_id)
         table = self.bigquery_client.get_table(table_ref)
 
@@ -40,7 +41,7 @@ class BigqueryClient:
                 "input": input_code,
                 "output": output,
                 "error_output": error_output,
-                "timestamp": timestamp,
+                "timestamp": datetime.datetime.now(),
             }
         ]
 
