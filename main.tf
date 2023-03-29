@@ -1,6 +1,7 @@
 provider "google" {
   project = var.project_id
   region  = var.region
+  zone    = var.zone
 }
 
 data "google_project" "current" {}
@@ -19,7 +20,9 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
     GCS_BUCKET_NAME     = google_storage_bucket.chatgpt_response_bucket.name
     INSTANCE_IP         = google_compute_instance.executor_instance.network_interface.0.access_config.0.nat_ip
     PRIVATE_KEY_CONTENT = file("gce_ssh_key")
-    SSH_USERNAME        = "your_username" # Usually 'debian' for Debian-based images
+    SSH_USERNAME        = var.instance_username
+    BIGQUERY_DATASET_ID = google_bigquery_dataset.chatgpt_dataset.dataset_id
+    BIGQUERY_TABLE_ID   = google_bigquery_table.chatgpt_table.table_id
   }
 
   event_trigger {
@@ -27,6 +30,7 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
     resource   = "projects/${var.project_id}/topics/${google_pubsub_topic.chatgpt_topic.name}"
   }
 }
+
 
 
 resource "google_pubsub_topic" "chatgpt_topic" {
@@ -61,4 +65,32 @@ resource "google_compute_instance" "executor_instance" {
     ]
   }
 
+}
+
+resource "google_bigquery_dataset" "chatgpt_dataset" {
+  dataset_id = "chatgpt_dataset"
+}
+
+resource "google_bigquery_table" "chatgpt_table" {
+  dataset_id = google_bigquery_dataset.chatgpt_dataset.dataset_id
+  table_id   = "chatgpt_table"
+
+  schema = jsonencode([
+    {
+      "name" : "input",
+      "type" : "STRING",
+    },
+    {
+      "name" : "output",
+      "type" : "STRING",
+    },
+    {
+      "name" : "error_output",
+      "type" : "STRING",
+    },
+    {
+      "name" : "timestamp",
+      "type" : "TIMESTAMP",
+    }
+  ])
 }

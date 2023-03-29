@@ -32,6 +32,14 @@ resource "google_project_service" "compute" {
 
 }
 
+resource "google_project_service" "bigquery" {
+  project = var.project_id
+  service = "bigquery.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy         = false
+
+}
 resource "google_project_iam_member" "cloudbuild_storage_object_viewer" {
   project = var.project_id
   role    = "roles/storage.objectViewer"
@@ -44,6 +52,7 @@ resource "time_sleep" "wait_for_services" {
     google_project_service.cloudbuild,
     google_project_service.cloudscheduler,
     google_project_service.compute,
+    google_project_service.bigquery,
   ]
   create_duration = "5m"
 }
