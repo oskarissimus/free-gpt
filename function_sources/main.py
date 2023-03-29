@@ -42,7 +42,7 @@ def execute_code(code):
     # You can use the Cloud Shell REST API or another method.
     pass
 
-def chatgpt_scheduler(request):
+def chatgpt_scheduler(event, context):
     last_executed_code = '...'  # Retrieve last executed code if needed.
     prompt = f"I received this code from the last execution: {last_executed_code}. Please provide instructions or information about this code."
     
