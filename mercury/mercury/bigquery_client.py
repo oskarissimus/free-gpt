@@ -14,13 +14,17 @@ class BigqueryClient(BaseBigqueryClient):
         return self.settings.bigquery_dataset_id
 
     @property
-    def table_id(self):
-        return self.settings.bigquery_table_id
+    def executions_table_id(self):
+        return self.settings.executions_table_id
+
+    @property
+    def chatgpt_table_id(self):
+        return self.settings.chat_table_id
 
     def get_last_executed_code(self):
         query = f"""
             SELECT input, output, error_output, timestamp
-            FROM `{self.dataset_id}.{self.table_id}`
+            FROM `{self.dataset_id}.{self.executions_table_id}`
             ORDER BY timestamp DESC
             LIMIT 1
         """
@@ -34,7 +38,9 @@ class BigqueryClient(BaseBigqueryClient):
         return last_executed_code if last_executed_code is not None else "..."
 
     def insert_execution_record(self, input_code, output, error_output):
-        table_ref = self.bigquery_client.dataset(self.dataset_id).table(self.table_id)
+        table_ref = self.bigquery_client.dataset(self.dataset_id).table(
+            self.executions_table_id
+        )
         table = self.bigquery_client.get_table(table_ref)
 
         rows_to_insert = [
@@ -52,3 +58,24 @@ class BigqueryClient(BaseBigqueryClient):
             print(f"Error inserting rows: {errors}")
         else:
             print("Inserted execution record successfully.")
+
+    def insert_chat_record(self, prompt, response):
+        table_ref = self.bigquery_client.dataset(self.dataset_id).table(
+            self.chatgpt_table_id
+        )
+        table = self.bigquery_client.get_table(table_ref)
+
+        rows_to_insert = [
+            {
+                "prompt": prompt,
+                "response": response,
+                "timestamp": datetime.datetime.now(),
+            }
+        ]
+
+        errors = self.bigquery_client.insert_rows(table, rows_to_insert)
+
+        if errors:
+            print(f"Error inserting rows: {errors}")
+        else:
+            print("Inserted chat record successfully.")

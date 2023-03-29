@@ -9,7 +9,7 @@ class BaseBigqueryClient(ABC):
 
     @property
     @abstractmethod
-    def table_id(self):
+    def executions_table_id(self):
         pass
 
     @abstractmethod

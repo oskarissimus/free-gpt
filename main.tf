@@ -22,7 +22,8 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
     PRIVATE_KEY_CONTENT = file("gce_ssh_key")
     SSH_USERNAME        = var.instance_username
     BIGQUERY_DATASET_ID = google_bigquery_dataset.chatgpt_dataset.dataset_id
-    BIGQUERY_TABLE_ID   = google_bigquery_table.chatgpt_table.table_id
+    EXECUTIONS_TABLE_ID = google_bigquery_table.executions.table_id
+    CHAT_TABLE_ID       = google_bigquery_table.chat.table_id
   }
 
   event_trigger {
@@ -71,9 +72,9 @@ resource "google_bigquery_dataset" "chatgpt_dataset" {
   dataset_id = "chatgpt_dataset"
 }
 
-resource "google_bigquery_table" "chatgpt_table" {
+resource "google_bigquery_table" "executions" {
   dataset_id = google_bigquery_dataset.chatgpt_dataset.dataset_id
-  table_id   = "chatgpt_table"
+  table_id   = "executions"
 
   schema = jsonencode([
     {
@@ -83,10 +84,14 @@ resource "google_bigquery_table" "chatgpt_table" {
     {
       "name" : "output",
       "type" : "STRING",
+      "mode" : "NULLABLE",
+
     },
     {
       "name" : "error_output",
       "type" : "STRING",
+      "mode" : "NULLABLE",
+
     },
     {
       "name" : "timestamp",
@@ -94,3 +99,26 @@ resource "google_bigquery_table" "chatgpt_table" {
     }
   ])
 }
+
+resource "google_bigquery_table" "chat" {
+  dataset_id = google_bigquery_dataset.chatgpt_dataset.dataset_id
+  table_id   = "chat"
+
+  schema = jsonencode([
+    {
+      "name" : "prompt",
+      "type" : "STRING",
+      "mode" : "NULLABLE",
+    },
+    {
+      "name" : "response",
+      "type" : "STRING",
+      "mode" : "NULLABLE",
+    },
+    {
+      "name" : "timestamp",
+      "type" : "TIMESTAMP",
+    }
+  ])
+}
+
