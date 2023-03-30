@@ -3,11 +3,8 @@ import logging
 
 from mercury.bigquery_client import BigqueryClient
 from mercury.dto import CodeExecutionDTO
-from mercury.openai_client import (
-    INTERACTION_USER_MESSAGE_TEMPLATE,
-    TASK,
-    OpenaiClient,
-)
+from mercury.openai_client import (INTERACTION_USER_MESSAGE_TEMPLATE, TASK,
+                                   OpenaiClient)
 from mercury.settings import Settings
 from mercury.ssh_client import SshClient
 from mercury.utils import digest_output_for_openai, extract_code
@@ -53,7 +50,7 @@ def chatgpt_scheduler(event, context):
     chatgpt_response = openai_client.get_chatgpt_response(prompt)
     bigquery_client.insert_chat_record(prompt, chatgpt_response)
     code_snippets = extract_code(chatgpt_response)
-    logger.info(f"response: {chatgpt_response}")
+    logger.info(f"response: {repr(chatgpt_response)}")
     logger.info(f"Code snippets extracted from response: {code_snippets}")
 
     for code in code_snippets:
