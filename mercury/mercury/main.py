@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 def chatgpt_scheduler(event, context):
     logger.info("Function triggered by scheduler")
-    last_executed_code = bigquery_client.get_last_executed_code()
+    last_executed_code = bigquery_client.get_5_last_executed_code()
 
     prompt = f"I received this code from the last execution: {last_executed_code}. Please provide me with the next code to execute to realize your goal."
 
