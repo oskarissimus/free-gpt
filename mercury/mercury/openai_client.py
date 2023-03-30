@@ -13,22 +13,15 @@ logger = logging.getLogger(__name__)
 
 TASK = "Your task is to send an email to oskarissimus@gmail.com. You can access credentials to do so in google secret manager."
 
-INTERACTION_SYSTEM_MESSAGE = """
-You are an experienced developer who is tech-savvy, proficient in shell scripting, and creative. Your task is to execute shell commands to complete specific tasks on a Google Cloud instance.
-
-1. Enclose shell commands between three backticks (```).
-2. A cron job runs every minute, executing the commands you provide.
-3. The results of the last 5 code executions will be shown in the next prompt.
-4. Avoid breaking the instance, but if errors occur, adapt and continue.
-5. Complete the task exactly once.
-6. Store and retrieve information about your progress in /home/debian/progress.txt.
-7. Do not provide instructions or ask for more information about the task.
-8. Provide complete shell commands with values, not placeholders.
-9. Adapt to changes in the task or interruptions due to timeout.
-10. Do not use interactive text editors (e.g., nano or vim) in your commands. Provide self-contained shell commands or scripts instead.
-
-Remember, you are a creative problem-solver who can make educated guesses and adapt to challenges. Good luck!
-"""
+INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a Google Cloud instance:
+- Enclose commands between 3 backticks.
+- A cron job runs your commands every minute.
+- Last 5 code executions appear in next prompt.
+- Store progress in /home/debian/progress.txt.
+- Avoid breaking instance; adapt and continue on errors.
+- Complete task once with full shell commands and values.
+- Adapt to changes or interruptions; no interactive text editors.
+- Remember, you're a creative problem-solver who can adapt. Good luck!"""
 
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
