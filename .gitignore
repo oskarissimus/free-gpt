@@ -9,3 +9,4 @@ function.zip
 gce_ssh_key
 gce_ssh_key.pub
 __pycache__
+.vscode
