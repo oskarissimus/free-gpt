@@ -1,9 +1,11 @@
-import json
 from google.cloud import bigquery
 from mercury.base_bigquery_client import BaseBigqueryClient
 from mercury.settings import Settings
 import datetime
 from mercury.dto import CodeExecutionDTO
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class BigqueryClient(BaseBigqueryClient):
@@ -35,7 +37,7 @@ class BigqueryClient(BaseBigqueryClient):
 
         return [CodeExecutionDTO.from_bigquery_row(row) for row in results]
 
-    def insert_execution_record(self, input_code, output, error_output):
+    def insert_execution_record(self, data: CodeExecutionDTO):
         table_ref = self.bigquery_client.dataset(self.dataset_id).table(
             self.executions_table_id
         )
@@ -43,9 +45,9 @@ class BigqueryClient(BaseBigqueryClient):
 
         rows_to_insert = [
             {
-                "input": input_code,
-                "output": output,
-                "error_output": error_output,
+                "input": data.code,
+                "output": data.output,
+                "error_output": data.error_output,
                 "timestamp": datetime.datetime.now(),
             }
         ]
@@ -53,9 +55,9 @@ class BigqueryClient(BaseBigqueryClient):
         errors = self.bigquery_client.insert_rows(table, rows_to_insert)
 
         if errors:
-            print(f"Error inserting rows: {errors}")
+            logger.error(f"Error inserting rows: {errors}")
         else:
-            print("Inserted execution record successfully.")
+            logger.info("Inserted execution record successfully.")
 
     def insert_chat_record(self, prompt, response):
         table_ref = self.bigquery_client.dataset(self.dataset_id).table(
@@ -74,6 +76,6 @@ class BigqueryClient(BaseBigqueryClient):
         errors = self.bigquery_client.insert_rows(table, rows_to_insert)
 
         if errors:
-            print(f"Error inserting rows: {errors}")
+            logger.error(f"Error inserting rows: {errors}")
         else:
-            print("Inserted chat record successfully.")
+            logger.info("Inserted chat record successfully.")
