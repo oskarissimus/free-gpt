@@ -78,6 +78,18 @@ def chatgpt_scheduler(event, context):
         )
         return "Code snippets too long, not executing.", 200
 
+    if not code_snippets:
+        logger.info("No code snippets found, not executing.")
+        bigquery_client.insert_execution_record(
+            CodeExecutionDTO(
+                code="No code snippets found, not executing.",
+                output="",
+                error_output="",
+                timestamp=datetime.datetime.now(),
+            )
+        )
+        return "No code snippets found, not executing.", 200
+
     for code in code_snippets:
         logger.info(f"Executing code: {code}")
         execution = ssh_client.execute_code(code)
