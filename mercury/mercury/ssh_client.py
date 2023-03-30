@@ -23,7 +23,7 @@ class SshClient:
     def execute_code(self, code: str) -> CodeExecutionDTO:
         try:
             self.connect_to_instance()
-            return self.run_command(self.ssh, code)
+            return self.run_command(code)
         except Exception as e:
             logger.error(f"Error executing code: {e}")
         finally:
