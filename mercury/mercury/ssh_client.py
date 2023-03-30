@@ -24,7 +24,7 @@ class SshClient:
 
     @property
     def private_key(self) -> paramiko.RSAKey:
-        return paramiko.RSAKey.from_private_key_file(StringIO(self.private_key_content))
+        return paramiko.RSAKey.from_private_key(StringIO(self.private_key_content))
 
     def execute_code(self, code: str) -> tuple[str, str]:
         logger.info(f"Executing code: {code}")
