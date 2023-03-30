@@ -1,9 +1,10 @@
-import paramiko
-from io import StringIO
-from mercury.settings import Settings
 import logging
-from mercury.dto import CodeExecutionDTO
+from io import StringIO
 
+import paramiko
+
+from mercury.dto import CodeExecutionDTO
+from mercury.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -38,4 +39,6 @@ class SshClient:
 
     def run_command(self, code: str) -> CodeExecutionDTO:
         channels_tuple = self.ssh.exec_command(code)
-        return CodeExecutionDTO.from_channels_tuple_and_code(channels_tuple, code)
+        return CodeExecutionDTO.from_channels_tuple_and_code(
+            channels_tuple, code
+        )
