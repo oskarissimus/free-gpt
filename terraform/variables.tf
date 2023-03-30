@@ -17,3 +17,11 @@ variable "openai_api_key" {
 variable "instance_username" {
   description = "The username for the executor instance."
 }
+
+variable "gmail_username" {
+  description = "The username for the Gmail account."
+}
+
+variable "gmail_password" {
+  description = "The password for the Gmail account."
+}

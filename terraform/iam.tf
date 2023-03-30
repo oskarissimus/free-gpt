@@ -38,7 +38,14 @@ resource "google_project_service" "bigquery" {
 
   disable_dependent_services = true
   disable_on_destroy         = false
+}
 
+resource "google_project_service" "secretmanager" {
+  project = var.project_id
+  service = "secretmanager.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy         = false
 }
 resource "google_project_iam_member" "cloudbuild_storage_object_viewer" {
   project = var.project_id
@@ -53,6 +60,7 @@ resource "time_sleep" "wait_for_services" {
     google_project_service.cloudscheduler,
     google_project_service.compute,
     google_project_service.bigquery,
+    google_project_service.secretmanager,
   ]
   create_duration = "5m"
 }
