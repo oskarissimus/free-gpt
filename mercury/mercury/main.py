@@ -3,7 +3,8 @@ import logging
 
 from mercury.bigquery_client import BigqueryClient
 from mercury.dto import CodeExecutionDTO
-from mercury.openai_client import (INTERACTION_USER_MESSAGE_TEMPLATE, TASK,
+from mercury.openai_client import (INTERACTION_SYSTEM_MESSAGE,
+                                   INTERACTION_USER_MESSAGE_TEMPLATE, TASK,
                                    OpenaiClient)
 from mercury.settings import Settings
 from mercury.ssh_client import SshClient
@@ -44,7 +45,7 @@ def chatgpt_scheduler(event, context):
 
     serialized_last_executions = json.dumps(digested_last_executions)
 
-    prompt = INTERACTION_USER_MESSAGE_TEMPLATE.format(
+    prompt = INTERACTION_SYSTEM_MESSAGE + INTERACTION_USER_MESSAGE_TEMPLATE.format(
         output=serialized_last_executions, task=TASK
     )
     chatgpt_response = openai_client.get_chatgpt_response(prompt)

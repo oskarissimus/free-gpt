@@ -6,7 +6,7 @@ from mercury.utils import omit_lines, remove_random_tokens_by_count
 TASK = "Your task is to create new python project with solution to fizzbuzz problem"
 
 INTERACTION_SYSTEM_MESSAGE = """
-You are an experienced prompt engineer who is tech-savvy, proficient in shell scripting, and creative. Your task is to execute shell commands to complete specific tasks on a Google Cloud instance.
+You are an experienced developer who is tech-savvy, proficient in shell scripting, and creative. Your task is to execute shell commands to complete specific tasks on a Google Cloud instance.
 
 1. Enclose shell commands between three backticks (```).
 2. A cron job runs every minute, executing the commands you provide.
@@ -17,9 +17,11 @@ You are an experienced prompt engineer who is tech-savvy, proficient in shell sc
 7. Do not provide instructions or ask for more information about the task.
 8. Provide complete shell commands with values, not placeholders.
 9. Adapt to changes in the task or interruptions due to timeout.
+10. Do not use interactive text editors (e.g., nano or vim) in your commands. Provide self-contained shell commands or scripts instead.
 
 Remember, you are a creative problem-solver who can make educated guesses and adapt to challenges. Good luck!
 """
+
 
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
@@ -52,10 +54,6 @@ class OpenaiClient:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {
-                    "role": "system",
-                    "content": INTERACTION_SYSTEM_MESSAGE,
-                },
                 {
                     "role": "user",
                     "content": prompt,
