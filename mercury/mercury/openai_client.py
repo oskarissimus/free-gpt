@@ -1,7 +1,6 @@
-from mercury.utils import count_tokens, omit_lines, remove_random_tokens_by_count
+from mercury.utils import omit_lines, remove_random_tokens_by_count
 import openai
 from mercury.settings import Settings
-import tiktoken
 
 
 INTERACTION_SYSTEM_MESSAGE = """You are an independent being.
