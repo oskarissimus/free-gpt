@@ -5,10 +5,23 @@ from typing import Optional
 import tiktoken
 
 
-def extract_code(response_text):
-    code_pattern = re.compile(r"```\n(.*?)```", re.DOTALL)
-    code_matches = code_pattern.findall(response_text)
-    return code_matches
+def extract_code(input: str) -> list[str]:
+    # Split the input string on the code block delimiter ('```')
+    splitted = input.split('```')
+
+    # Extract the text from every other element of the split string
+    code_blocks = [splitted[i] for i in range(1,len(splitted),2)]
+
+    # Remove any leading/trailing whitespace from each code block
+    code_blocks = [block.strip() for block in code_blocks]
+
+    # Remove any empty code blocks
+    code_blocks = [block for block in code_blocks if len(block) > 0]
+
+    # Return the list of extracted code blocks
+    return code_blocks
+
+
 
 
 def count_tokens(text: str) -> Optional[int]:

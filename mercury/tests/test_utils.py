@@ -1,4 +1,4 @@
-from mercury.utils import omit_lines
+from mercury.utils import extract_code, omit_lines
 
 
 def test_omit_lines():
@@ -127,3 +127,63 @@ This is a tenth single line
 This is an eleventh single line"""
 
     assert omit_lines(input) == expected
+
+
+def test_extract_code_with_multiple_code_blocks():
+    input = """```papiez polak``` drugi kod ```papiez niemiec```"""
+    expected = [
+        "papiez polak",
+        "papiez niemiec"
+    ]
+    assert extract_code(input) == expected
+
+def test_extract_code_with_empty_input():
+    input = ""
+    expected = []
+
+    assert extract_code(input) == expected
+
+def test_extract_code_with_single_code_block():
+    input = "```echo 'hello world'```"
+    expected = ["echo 'hello world'"]
+
+    assert extract_code(input) == expected
+
+
+def test_extract_code_with_text_between_code_blocks():
+    input = """```echo 'hello'```
+    This is some text.
+    ```echo 'world'```"""
+    expected = ["echo 'hello'", "echo 'world'"]
+
+    assert extract_code(input) == expected
+
+
+def test_extract_code_with_whitespace_and_newlines():
+    input = """```
+echo "hello world"
+```
+
+```
+for i in range(10):
+    print(i)
+```"""
+    expected = ["echo \"hello world\"", "for i in range(10):\n    print(i)"]
+
+    assert extract_code(input) == expected
+
+def test_extract_code_with_special_characters():
+    input = """```
+echo "$PATH"
+```"""
+    expected = ["echo \"$PATH\""]
+
+    assert extract_code(input) == expected
+
+def test_extract_code_with_special_characters2():
+    input = r"""```
+print("Hello\tworld!")
+```"""
+    expected = [r"""print("Hello\tworld!")"""]
+
+    assert extract_code(input) == expected
