@@ -66,6 +66,8 @@ class OpenaiClient:
         return response["choices"][0]["message"]["content"]
 
     def summarize_command_output(self, command: str, output: str) -> str:
+        if len(output) < 100:
+            return output
         compressed = remove_random_tokens_by_count(output)
         output_with_ommited_lines = omit_lines(output)
         user_message = COMPRESSION_USER_MESSAGE_TEMPLATE.format(
