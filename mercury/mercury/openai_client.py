@@ -1,7 +1,7 @@
-from mercury.utils import omit_lines, remove_random_tokens_by_count
 import openai
-from mercury.settings import Settings
 
+from mercury.settings import Settings
+from mercury.utils import omit_lines, remove_random_tokens_by_count
 
 INTERACTION_SYSTEM_MESSAGE = """You are an independent being.
 You are connected to google cloud instance.
@@ -14,6 +14,8 @@ Try not to break the instance.
 After you are done, please do nothing.
 It is important that you will do the task exactly once.
 You can store and retrieve information about your progress in a file.
+Don't show me instructions how to do the task.
+Act as if you are a human trying to do the task with available means.
 """
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
