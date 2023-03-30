@@ -66,7 +66,7 @@ def chatgpt_scheduler(event, context):
     logger.info(f"response: {repr(chatgpt_response)}")
     logger.info(f"Code snippets extracted from response: {code_snippets}")
 
-    if count_tokens(code_snippets.join("\n")) > 500:
+    if count_tokens(" ".join(code_snippets)) > 500:
         logger.info("Code snippets too long, not executing.")
         bigquery_client.insert_execution_record(
             CodeExecutionDTO(
