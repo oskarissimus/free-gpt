@@ -2,6 +2,8 @@ import datetime
 import json
 import logging
 
+import google.cloud.logging
+
 from mercury.bigquery_client import BigqueryClient
 from mercury.dto import CodeExecutionDTO
 from mercury.openai_client import (
@@ -24,6 +26,9 @@ bigquery_client = BigqueryClient(settings)
 ssh_client = SshClient(settings)
 openai_client = OpenaiClient(settings)
 
+
+client = google.cloud.logging.Client()
+client.setup_logging()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -73,7 +78,7 @@ def chatgpt_scheduler(event, context):
                 code="Code snippets too long, not executing.",
                 output="",
                 error_output="",
-                timestamp=datetime.datetime.now(),
+                timestamp=str(int(datetime.datetime.now().timestamp())),
             )
         )
         return "Code snippets too long, not executing.", 200
@@ -85,7 +90,7 @@ def chatgpt_scheduler(event, context):
                 code="No code snippets found, not executing.",
                 output="",
                 error_output="",
-                timestamp=datetime.datetime.now(),
+                timestamp=str(int(datetime.datetime.now().timestamp())),
             )
         )
         return "No code snippets found, not executing.", 200
