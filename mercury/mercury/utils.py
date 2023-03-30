@@ -70,6 +70,6 @@ def remove_random_tokens_by_count(text, keep=3000):
 
 
 def digest_output_for_openai(command: str, output: str, summarize):
-    output_with_ommited_lines = omit_lines(output)
+    output_with_ommited_lines = omit_lines(output, 4)
     summary = summarize(command, output)
     return f"{output_with_ommited_lines}\n===> summary: {summary}"
