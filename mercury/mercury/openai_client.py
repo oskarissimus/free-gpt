@@ -3,7 +3,7 @@ import openai
 from mercury.settings import Settings
 from mercury.utils import omit_lines, remove_random_tokens_by_count
 
-TASK = "Your task is to create new python project with solution to fizzbuzz problem"
+TASK = "Your task is to send an email to oskarissimus@gmail.com. You can access credentials to do so in google secret manager."
 
 INTERACTION_SYSTEM_MESSAGE = """
 You are an experienced developer who is tech-savvy, proficient in shell scripting, and creative. Your task is to execute shell commands to complete specific tasks on a Google Cloud instance.
@@ -21,7 +21,6 @@ You are an experienced developer who is tech-savvy, proficient in shell scriptin
 
 Remember, you are a creative problem-solver who can make educated guesses and adapt to challenges. Good luck!
 """
-
 
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
@@ -67,7 +66,7 @@ class OpenaiClient:
         if len(output) < 100:
             return output
         compressed = remove_random_tokens_by_count(output)
-        output_with_ommited_lines = omit_lines(output)
+        output_with_ommited_lines = omit_lines(output, 4)
         user_message = COMPRESSION_USER_MESSAGE_TEMPLATE.format(
             command=command[:100],
             compressed_output=compressed,

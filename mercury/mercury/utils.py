@@ -17,15 +17,15 @@ def count_tokens(text: str) -> Optional[int]:
     return len(encoding.encode(text))
 
 
-def omit_lines(text: str) -> str:
+def omit_lines(text: str, lines_to_show: int = 10) -> str:
     if text is None or len(text) == 0:
         return ""
     lines = text.splitlines()
-    if len(lines) <= 10:
+    if len(lines) <= lines_to_show:
         return text
-    top = lines[:5]
-    bottom = lines[-5:]
-    omitted_count = len(lines) - 10
+    top = lines[: lines_to_show // 2]
+    bottom = lines[-lines_to_show // 2 :]
+    omitted_count = len(lines) - lines_to_show
     omitted = [f"(*** {omitted_count} lines omitted ***)"]
     return "\n".join(top + omitted + bottom)
 
