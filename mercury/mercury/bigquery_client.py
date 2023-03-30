@@ -1,5 +1,5 @@
 from google.cloud import bigquery
-from mercury.base_bigquery_client import BaseBigqueryClient
+
 from mercury.settings import Settings
 import datetime
 from mercury.dto import CodeExecutionDTO
@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class BigqueryClient(BaseBigqueryClient):
+class BigqueryClient:
     def __init__(self, settings: Settings):
         self.settings = settings
         self.bigquery_client = bigquery.Client()
