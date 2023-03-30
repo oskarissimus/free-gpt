@@ -17,6 +17,15 @@ def count_tokens(text: str) -> Optional[int]:
     return len(encoding.encode(text))
 
 
+def trim_by_token_count(text: str, max_tokens: int) -> str:
+    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+    tokens = encoding.encode(text)
+    if len(tokens) <= max_tokens:
+        return text
+    trimmed_tokens = tokens[:max_tokens]
+    return encoding.decode(trimmed_tokens)
+
+
 def omit_lines(text: str, lines_to_show: int = 10) -> str:
     if text is None or len(text) == 0:
         return ""

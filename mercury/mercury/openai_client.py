@@ -21,7 +21,9 @@ INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a G
 - Avoid breaking instance; adapt and continue on errors.
 - Complete task once with full shell commands and values.
 - Adapt to changes or interruptions; no interactive text editors.
-- Remember, you're a creative problem-solver who can adapt. Good luck!"""
+- Remember, you're a creative problem-solver who can adapt. Good luck!
+- Single command should be shorter than 500 chatgpt-3.5-turbo tokens.
+"""
 
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
