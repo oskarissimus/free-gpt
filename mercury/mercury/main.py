@@ -1,8 +1,10 @@
+import json
+from mercury.dto import CodeExecutionDTO
 from mercury.settings import Settings
 from mercury.bigquery_client import BigqueryClient
 from mercury.ssh_client import SshClient
-from mercury.openai_client import OpenaiClient
-from mercury.utils import extract_code
+from mercury.openai_client import INTERACTION_USER_MESSAGE_TEMPLATE, OpenaiClient
+from mercury.utils import extract_code, digest_output_for_openai
 import logging
 
 
@@ -17,10 +19,29 @@ logger = logging.getLogger(__name__)
 
 def chatgpt_scheduler(event, context):
     logger.info("Function triggered by scheduler")
-    last_executed_code = bigquery_client.get_5_last_executed_code()
+    last_executions = bigquery_client.get_5_last_executed_code()
+    digested_last_executions = []
+    for execution in last_executions:
+        output = digest_output_for_openai(
+            execution.code, execution.output, openai_client.summarize_command_output
+        )
+        error_output = digest_output_for_openai(
+            execution.code,
+            execution.error_output,
+            openai_client.summarize_command_output,
+        )
+        digested_last_executions.append(
+            CodeExecutionDTO(
+                code=execution.code,
+                output=output,
+                error_output=error_output,
+                timestamp=execution.timestamp,
+            ).dict()
+        )
 
-    prompt = f"I received this code from the last execution: {last_executed_code}. Please provide me with the next code to execute to realize your goal."
+    serialized_last_executions = json.dumps(digested_last_executions)
 
+    prompt = INTERACTION_USER_MESSAGE_TEMPLATE.format(output=serialized_last_executions)
     chatgpt_response = openai_client.get_chatgpt_response(prompt)
     bigquery_client.insert_chat_record(prompt, chatgpt_response)
     code_snippets = extract_code(chatgpt_response)

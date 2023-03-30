@@ -3,6 +3,7 @@ from google.cloud import bigquery
 from mercury.base_bigquery_client import BaseBigqueryClient
 from mercury.settings import Settings
 import datetime
+from mercury.dto import CodeExecutionDTO
 
 
 class BigqueryClient(BaseBigqueryClient):
@@ -22,7 +23,7 @@ class BigqueryClient(BaseBigqueryClient):
     def chatgpt_table_id(self):
         return self.settings.chat_table_id
 
-    def get_5_last_executed_code(self):
+    def get_5_last_executed_code(self) -> list[CodeExecutionDTO]:
         query = f"""
             SELECT input, output, error_output, timestamp
             FROM `{self.dataset_id}.{self.executions_table_id}`
@@ -32,19 +33,7 @@ class BigqueryClient(BaseBigqueryClient):
         query_job = self.bigquery_client.query(query)
         results = query_job.result()
 
-        last_executed_codes = []
-        for row in results:
-            data = {
-                "input": row["input"],
-                "output": row["output"],
-                "error_output": row["error_output"],
-                "timestamp": str(row["timestamp"]),
-            }
-            last_executed_codes.append(data)
-
-        output = json.dumps(last_executed_codes)
-
-        return output if output else "..."
+        return [CodeExecutionDTO.from_bigquery_row(row) for row in results]
 
     def insert_execution_record(self, input_code, output, error_output):
         table_ref = self.bigquery_client.dataset(self.dataset_id).table(
