@@ -13,7 +13,7 @@ class BaseBigqueryClient(ABC):
         pass
 
     @abstractmethod
-    def get_last_executed_code(self):
+    def get_5_last_executed_code(self):
         """
         Retrieve the last executed code from the BigQuery table.
 
