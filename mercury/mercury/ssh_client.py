@@ -40,7 +40,7 @@ class SshClient:
             logger.info("Command executed successfully")
             return output, error_output
         except Exception as e:
-            print(f"Error: {e}")
+            logger.error(f"Error executing code: {e}")
         finally:
             ssh.close()
 

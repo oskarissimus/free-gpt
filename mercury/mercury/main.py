@@ -28,7 +28,7 @@ def chatgpt_scheduler(event, context):
 
     for code in code_snippets:
         logger.info(f"Executing code: {code}")
-        output, error_output = ssh_client.execute_code(code, bigquery_client)
+        output, error_output = ssh_client.execute_code(code)
         bigquery_client.insert_execution_record(code, output, error_output)
 
     return "Function executed successfully.", 200
