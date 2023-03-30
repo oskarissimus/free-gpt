@@ -1,7 +1,8 @@
-import tiktoken
-from typing import Optional
-import re
 import random
+import re
+from typing import Optional
+
+import tiktoken
 
 
 def extract_code(response_text):
@@ -16,7 +17,11 @@ def count_tokens(text: str) -> Optional[int]:
 
 
 def omit_lines(text: str) -> str:
+    if text is None or len(text) == 0:
+        return ""
     lines = text.splitlines()
+    if len(lines) <= 10:
+        return text
     top = lines[:5]
     bottom = lines[-5:]
     omitted_count = len(lines) - 10
@@ -40,7 +45,9 @@ def remove_random_tokens_from_line(text, keep=0.9):
 
 def remove_random_tokens_by_percent(text, keep=0.9):
     lines = text.splitlines()
-    return "\n".join([remove_random_tokens_from_line(line, keep) for line in lines])
+    return "\n".join(
+        [remove_random_tokens_from_line(line, keep) for line in lines]
+    )
 
 
 def remove_random_tokens_by_count(text, keep=3000):

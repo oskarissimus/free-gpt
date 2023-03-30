@@ -43,3 +43,87 @@ Reading state information... Done
 All packages are up to date."""
 
     assert omit_lines(input) == expected
+
+
+def test_omit_lines_with_empty_lines():
+    input = ""
+    expected = ""
+
+    assert omit_lines(input) == expected
+
+
+def test_omit_lines_with_single_line():
+    input = "This is a single line"
+    expected = "This is a single line"
+
+    assert omit_lines(input) == expected
+
+
+def test_omit_lines_with_single_line_and_newline():
+    input = "This is a single line\n"
+    expected = "This is a single line\n"
+
+    assert omit_lines(input) == expected
+
+
+def test_omit_lines_with_multiple_lines():
+    input = """This is a single line
+This is another single line
+This is a third single line"""
+    expected = """This is a single line
+This is another single line
+This is a third single line"""
+
+    assert omit_lines(input) == expected
+
+
+def test_omit_lines_with_exactly_10_lines():
+    input = """This is a single line
+This is another single line
+This is a third single line
+This is a fourth single line
+This is a fifth single line
+This is a sixth single line
+This is a seventh single line
+This is an eighth single line
+This is a ninth single line
+This is a tenth single line"""
+    expected = """This is a single line
+This is another single line
+This is a third single line
+This is a fourth single line
+This is a fifth single line
+This is a sixth single line
+This is a seventh single line
+This is an eighth single line
+This is a ninth single line
+This is a tenth single line"""
+
+    assert omit_lines(input) == expected
+
+
+def test_omit_lines_with_exactly_11_lines():
+    input = """This is a single line
+This is another single line
+This is a third single line
+This is a fourth single line
+This is a fifth single line
+This is a sixth single line
+This is a seventh single line
+This is an eighth single line
+This is a ninth single line
+This is a tenth single line
+This is an eleventh single line"""
+    expected = """This is a single line
+This is another single line
+This is a third single line
+This is a fourth single line
+This is a fifth single line
+(*** 1 lines omitted ***)
+This is a seventh single line
+This is an eighth single line
+This is a ninth single line
+This is a tenth single line
+This is an eleventh single line"""
+
+    assert omit_lines(input) == expected
