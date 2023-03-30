@@ -1,9 +1,10 @@
+import datetime
+import logging
+
 from google.cloud import bigquery
 
-from mercury.settings import Settings
-import datetime
 from mercury.dto import CodeExecutionDTO
-import logging
+from mercury.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ class BigqueryClient:
                 "input": data.code,
                 "output": data.output,
                 "error_output": data.error_output,
-                "timestamp": datetime.datetime.now(),
+                "timestamp": str(int(datetime.datetime.now().timestamp())),
             }
         ]
 
@@ -69,7 +70,7 @@ class BigqueryClient:
             {
                 "prompt": prompt,
                 "response": response,
-                "timestamp": datetime.datetime.now(),
+                "timestamp": str(int(datetime.datetime.now().timestamp())),
             }
         ]
 
