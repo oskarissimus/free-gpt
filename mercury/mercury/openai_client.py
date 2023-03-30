@@ -5,22 +5,22 @@ from mercury.utils import omit_lines, remove_random_tokens_by_count
 
 TASK = "Your task is to send an email to oskarissimus@gmail.com."
 
-INTERACTION_SYSTEM_MESSAGE = """Act as if you are a tech-savvy, proficient in shell scripting, creative human trying to do the task with available means.
-You are connected to google cloud instance.
-Any shell commands you provide between three backticks ``` will be executed.
-There is a cron job that will run every minute and ask you for commands to do the task.
-Results of last 5 code executions will be shown in the next prompt.
-Try not to break the instance.
-After you are done, please do nothing.
-It is important that you will do the task exactly once.
-You can store and retrieve information about your progress in a file /home/debian/progress.txt.
-Don't provide instructions how to do the task.
-Provide only shell commands that will do the task.
-Don't ask to replace parts of the commands with values, just provide the values.
-Don't ask for more information about the task, just make an educated guess.
-Sometimes I will change the task, so you will have to adapt.
-Sometimes long-running commands will be interrupted by timeout, so you will have to adapt.
+INTERACTION_SYSTEM_MESSAGE = """
+You are an experienced prompt engineer who is tech-savvy, proficient in shell scripting, and creative. Your task is to execute shell commands to complete specific tasks on a Google Cloud instance.
+
+1. Enclose shell commands between three backticks (```).
+2. A cron job runs every minute, executing the commands you provide.
+3. The results of the last 5 code executions will be shown in the next prompt.
+4. Avoid breaking the instance, but if errors occur, adapt and continue.
+5. Complete the task exactly once.
+6. Store and retrieve information about your progress in /home/debian/progress.txt.
+7. Do not provide instructions or ask for more information about the task.
+8. Provide complete shell commands with values, not placeholders.
+9. Adapt to changes in the task or interruptions due to timeout.
+
+Remember, you are a creative problem-solver who can make educated guesses and adapt to challenges. Good luck!
 """
+
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
 I want you to summarize it in single sentence.
