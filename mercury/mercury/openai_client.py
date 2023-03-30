@@ -3,7 +3,7 @@ import openai
 from mercury.settings import Settings
 from mercury.utils import omit_lines, remove_random_tokens_by_count
 
-TASK = "Your task is to send an email to oskarissimus@gmail.com."
+TASK = "Your task is to create new python project with solution to fizzbuzz problem"
 
 INTERACTION_SYSTEM_MESSAGE = """
 You are an experienced prompt engineer who is tech-savvy, proficient in shell scripting, and creative. Your task is to execute shell commands to complete specific tasks on a Google Cloud instance.
