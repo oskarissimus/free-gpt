@@ -1,12 +1,16 @@
 import json
-from mercury.dto import CodeExecutionDTO
-from mercury.settings import Settings
-from mercury.bigquery_client import BigqueryClient
-from mercury.ssh_client import SshClient
-from mercury.openai_client import INTERACTION_USER_MESSAGE_TEMPLATE, OpenaiClient
-from mercury.utils import extract_code, digest_output_for_openai
 import logging
 
+from mercury.bigquery_client import BigqueryClient
+from mercury.dto import CodeExecutionDTO
+from mercury.openai_client import (
+    INTERACTION_USER_MESSAGE_TEMPLATE,
+    TASK,
+    OpenaiClient,
+)
+from mercury.settings import Settings
+from mercury.ssh_client import SshClient
+from mercury.utils import digest_output_for_openai, extract_code
 
 settings = Settings()
 bigquery_client = BigqueryClient(settings)
@@ -23,7 +27,9 @@ def chatgpt_scheduler(event, context):
     digested_last_executions = []
     for execution in last_executions:
         output = digest_output_for_openai(
-            execution.code, execution.output, openai_client.summarize_command_output
+            execution.code,
+            execution.output,
+            openai_client.summarize_command_output,
         )
         error_output = digest_output_for_openai(
             execution.code,
@@ -41,7 +47,9 @@ def chatgpt_scheduler(event, context):
 
     serialized_last_executions = json.dumps(digested_last_executions)
 
-    prompt = INTERACTION_USER_MESSAGE_TEMPLATE.format(output=serialized_last_executions)
+    prompt = INTERACTION_USER_MESSAGE_TEMPLATE.format(
+        output=serialized_last_executions, task=TASK
+    )
     chatgpt_response = openai_client.get_chatgpt_response(prompt)
     bigquery_client.insert_chat_record(prompt, chatgpt_response)
     code_snippets = extract_code(chatgpt_response)

@@ -3,19 +3,23 @@ import openai
 from mercury.settings import Settings
 from mercury.utils import omit_lines, remove_random_tokens_by_count
 
-INTERACTION_SYSTEM_MESSAGE = """You are an independent being.
+TASK = "Your task is to send an email to oskarissimus@gmail.com."
+
+INTERACTION_SYSTEM_MESSAGE = """Act as if you are a tech-savvy, proficient in shell scripting, creative human trying to do the task with available means.
 You are connected to google cloud instance.
-Any shell code you provide between three backticks ``` will be executed.
-There is a cron job that will run every minute and ask you for instructions.
-Results of last 5 code executions will be shown.
-Your first task is to create one new account on github.
-Your second task is to fork repository free-gpt from user oskarissimus.
+Any shell commands you provide between three backticks ``` will be executed.
+There is a cron job that will run every minute and ask you for commands to do the task.
+Results of last 5 code executions will be shown in the next prompt.
 Try not to break the instance.
 After you are done, please do nothing.
 It is important that you will do the task exactly once.
-You can store and retrieve information about your progress in a file.
-Don't show me instructions how to do the task.
-Act as if you are a human trying to do the task with available means.
+You can store and retrieve information about your progress in a file /home/debian/progress.txt.
+Don't provide instructions how to do the task.
+Provide only shell commands that will do the task.
+Don't ask to replace parts of the commands with values, just provide the values.
+Don't ask for more information about the task, just make an educated guess.
+Sometimes I will change the task, so you will have to adapt.
+Sometimes long-running commands will be interrupted by timeout, so you will have to adapt.
 """
 
 COMPRESSION_SYSTEM_MESSAGE = """I will show you output of shell command.
@@ -35,7 +39,8 @@ COMPRESSION_USER_MESSAGE_TEMPLATE = """===> command: {command}
 INTERACTION_USER_MESSAGE_TEMPLATE = """below is the output of the last command.
 {output}
 if the task is done, please do nothing.
-if the task is not done, please provide further commands."""
+if the task is not done, please provide further commands.
+{task}"""
 
 
 class OpenaiClient:
