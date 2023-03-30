@@ -25,6 +25,7 @@ class OpenaiClient:
         openai.api_key = self.settings.openai_api_key
 
     def get_chatgpt_response(self, prompt: str) -> str:
+        prompt = self.reduce_tokens_while_maintaining_meaning(prompt)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
