@@ -31,12 +31,12 @@ Building dependency tree... Done
 Reading state information... Done
 All packages are up to date."""
     expected = """Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
-Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]                                                     
-Get:3 https://apt.releases.hashicorp.com jammy InRelease [12.9 kB]                                                                       
-Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]                                                                               
-Get:5 https://packages.cloud.google.com/apt cloud-sdk InRelease [6361 B]                                           
+Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]
+Get:3 https://apt.releases.hashicorp.com jammy InRelease [12.9 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]
+Get:5 https://packages.cloud.google.com/apt cloud-sdk InRelease [6361 B]
 (*** 18 lines omitted ***)
-Fetched 5759 kB in 1s (4861 kB/s)                                     
+Fetched 5759 kB in 1s (4861 kB/s)
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
@@ -131,17 +131,16 @@ This is an eleventh single line"""
 
 def test_extract_code_with_multiple_code_blocks():
     input = """```papiez polak``` drugi kod ```papiez niemiec```"""
-    expected = [
-        "papiez polak",
-        "papiez niemiec"
-    ]
+    expected = ["papiez polak", "papiez niemiec"]
     assert extract_code(input) == expected
+
 
 def test_extract_code_with_empty_input():
     input = ""
     expected = []
 
     assert extract_code(input) == expected
+
 
 def test_extract_code_with_single_code_block():
     input = "```echo 'hello world'```"
@@ -168,17 +167,19 @@ echo "hello world"
 for i in range(10):
     print(i)
 ```"""
-    expected = ["echo \"hello world\"", "for i in range(10):\n    print(i)"]
+    expected = ['echo "hello world"', "for i in range(10):\n    print(i)"]
 
     assert extract_code(input) == expected
+
 
 def test_extract_code_with_special_characters():
     input = """```
 echo "$PATH"
 ```"""
-    expected = ["echo \"$PATH\""]
+    expected = ['echo "$PATH"']
 
     assert extract_code(input) == expected
+
 
 def test_extract_code_with_special_characters2():
     input = r"""```

@@ -27,7 +27,9 @@ def omit_lines(text: str, lines_to_show: int = 10) -> str:
     bottom = lines[-lines_to_show // 2 :]
     omitted_count = len(lines) - lines_to_show
     omitted = [f"(*** {omitted_count} lines omitted ***)"]
-    return "\n".join(top + omitted + bottom)
+    all_lines = top + omitted + bottom
+    all_lines = [line.strip() for line in all_lines]
+    return "\n".join(all_lines)
 
 
 def trim_all_lines(text: str):

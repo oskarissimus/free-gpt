@@ -1,7 +1,15 @@
+import logging
+
 import openai
 
 from mercury.settings import Settings
-from mercury.utils import omit_lines, remove_random_tokens_by_count
+from mercury.utils import (
+    count_tokens,
+    omit_lines,
+    remove_random_tokens_by_count,
+)
+
+logger = logging.getLogger(__name__)
 
 TASK = "Your task is to send an email to oskarissimus@gmail.com. You can access credentials to do so in google secret manager."
 
@@ -50,6 +58,8 @@ class OpenaiClient:
         openai.api_key = self.settings.openai_api_key
 
     def get_chatgpt_response(self, prompt: str) -> str:
+        logger.info(f"Sending prompt to OpenAI: {repr(prompt)}")
+        logger.info(f"token count: {count_tokens(prompt)}")
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
