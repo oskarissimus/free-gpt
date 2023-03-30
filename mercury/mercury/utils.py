@@ -44,6 +44,8 @@ def remove_random_tokens_by_percent(text, keep=0.9):
 
 
 def remove_random_tokens_by_count(text, keep=3000):
+    if count_tokens(text) <= keep:
+        return text
     keep_percent = min(1, keep / count_tokens(text))
     return remove_random_tokens_by_percent(text, keep_percent)
 
