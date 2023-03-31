@@ -60,10 +60,14 @@ def chatgpt_scheduler(event, context):
         str(execution) for execution in digested_last_executions
     )
 
-    prompt = INTERACTION_SYSTEM_MESSAGE.format(
-        task=TASK
-    ) + INTERACTION_USER_MESSAGE_TEMPLATE.format(
-        output=formatted_last_executions
+    tail = ssh_client.execute_code("tail /home/debian/progress.txt")
+
+    prompt = (
+        INTERACTION_SYSTEM_MESSAGE.format(task=TASK)
+        + INTERACTION_USER_MESSAGE_TEMPLATE.format(
+            output=formatted_last_executions
+        )
+        + str(tail)
     )
     chatgpt_response = openai_client.get_chatgpt_response(prompt)
     bigquery_client.insert_chat_record(prompt, chatgpt_response)

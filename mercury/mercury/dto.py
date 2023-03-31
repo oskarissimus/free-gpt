@@ -28,7 +28,7 @@ class CodeExecutionDTO(BaseModel):
         )
 
     def __str__(self):
-        return f"""=> Input: {self.code}
+        return f"""=> Input: ```{self.code}```
 => Output: {self.output}
 => Error output: {self.error_output}
 => Timestamp: {self.timestamp}"""
