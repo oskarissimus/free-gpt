@@ -13,8 +13,10 @@ logger = logging.getLogger(__name__)
 
 TASK = """Your task is to send an email to oskarissimus@gmail.com.
 You can access credentials to do so in google secret manager.
-projects/682396996891/secrets/gmail_username
-projects/682396996891/secrets/gmail_password"""
+projects/682396996891/secrets/email_username
+projects/682396996891/secrets/email_password
+your smtp server is smtp.poczta.onet.pl port: 465 Typ zabezpieczeń: SSL
+"""
 
 INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a Google Cloud instance:
 - **IMPORTANT: Enclose commands between 3 backticks (```)**. Otherwise, they will not be executed.
@@ -29,6 +31,7 @@ INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a G
 - Default timeout is 60 seconds. If you anticipate longer execution time, split your command into multiple steps, and execute them one by one in separate prompts.
 - If the task is done, please do nothing.
 - If the task is not done, please provide further commands.
+- **IMPORTANT: look at previous commands and outputs to deduce what to do next.**
 {task}
 """
 
