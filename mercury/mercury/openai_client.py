@@ -17,7 +17,7 @@ projects/682396996891/secrets/gmail_username
 projects/682396996891/secrets/gmail_password"""
 
 INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a Google Cloud instance:
-- Enclose commands between 3 backticks.
+- It is very important that you enclose commands between 3 backticks (```). Otherwise, they will not be executed.
 - A cron job runs your commands every minute.
 - Last 5 code executions appear in next prompt.
 - Store progress in /home/debian/progress.txt.
@@ -27,6 +27,9 @@ INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a G
 - Remember, you're a creative problem-solver who can adapt. Good luck!
 - Single command should be shorter than 500 chatgpt-3.5-turbo tokens.
 - Default timeout is 60 seconds. If you anticipate longer execution time, split your command into multiple steps, and execute them one by one in separate prompts.
+- If the task is done, please do nothing.
+- If the task is not done, please provide further commands.
+{task}
 """
 
 
@@ -44,11 +47,8 @@ COMPRESSION_USER_MESSAGE_TEMPLATE = """===> command: {command}
 ===> compressed output: {compressed_output}
 ===> output with ommited lines {output_with_ommited_lines}"""
 
-INTERACTION_USER_MESSAGE_TEMPLATE = """below is the output of the last command.
-{output}
-if the task is done, please do nothing.
-if the task is not done, please provide further commands.
-{task}"""
+INTERACTION_USER_MESSAGE_TEMPLATE = """- Below are the outputs of the last 5 attempts.
+{output}"""
 
 
 class OpenaiClient:
