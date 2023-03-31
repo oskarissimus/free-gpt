@@ -1,5 +1,4 @@
 import datetime
-import json
 import logging
 
 import google.cloud.logging
@@ -54,7 +53,7 @@ def chatgpt_scheduler(event, context):
                 output=output,
                 error_output=error_output,
                 timestamp=execution.timestamp,
-            ).dict()
+            )
         )
 
     formatted_last_executions = "\n".join(
