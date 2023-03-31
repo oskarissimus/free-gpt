@@ -17,7 +17,7 @@ projects/682396996891/secrets/gmail_username
 projects/682396996891/secrets/gmail_password"""
 
 INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a Google Cloud instance:
-- It is very important that you enclose commands between 3 backticks (```). Otherwise, they will not be executed.
+- **IMPORTANT: Enclose commands between 3 backticks (```)**. Otherwise, they will not be executed.
 - A cron job runs your commands every minute.
 - Last 5 code executions appear in next prompt.
 - Store progress in /home/debian/progress.txt.

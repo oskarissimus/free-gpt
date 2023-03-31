@@ -8,6 +8,7 @@ resource "google_compute_instance" "executor_instance" {
   desired_status            = var.vm_status
   metadata = {
     ssh-keys = "${var.instance_username}:${file("gce_ssh_key.pub")}"
+
   }
   boot_disk {
     initialize_params {
@@ -24,10 +25,12 @@ resource "google_compute_instance" "executor_instance" {
   }
 
   service_account {
+    email = google_service_account.vm_instance_service_account.email
     scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
     ]
   }
+
 
 }
 

@@ -56,7 +56,7 @@ def chatgpt_scheduler(event, context):
             )
         )
 
-    formatted_last_executions = "\n".join(
+    formatted_last_executions = "\n---\n".join(
         str(execution) for execution in digested_last_executions
     )
 
@@ -87,7 +87,7 @@ def chatgpt_scheduler(event, context):
         logger.info("No code snippets found, not executing.")
         bigquery_client.insert_execution_record(
             CodeExecutionDTO(
-                code="No code snippets found, not executing.",
+                code="No code snippets found, not executing. Commands must be enclosed in three backticks (```)",
                 output="",
                 error_output="",
                 timestamp=str(int(datetime.datetime.now().timestamp())),
