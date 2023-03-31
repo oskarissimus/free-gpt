@@ -1,4 +1,5 @@
 from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -25,3 +26,9 @@ class CodeExecutionDTO(BaseModel):
             error_output=row["error_output"],
             timestamp=str(row["timestamp"]),
         )
+
+    def __str__(self):
+        return f"""Input: {self.code}
+Output: {self.output}
+Error output: {self.error_output}
+Timestamp: {self.timestamp}"""

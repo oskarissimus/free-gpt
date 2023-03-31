@@ -57,12 +57,14 @@ def chatgpt_scheduler(event, context):
             ).dict()
         )
 
-    serialized_last_executions = json.dumps(digested_last_executions)
+    formatted_last_executions = "\n".join(
+        str(execution) for execution in digested_last_executions
+    )
 
     prompt = (
         INTERACTION_SYSTEM_MESSAGE
         + INTERACTION_USER_MESSAGE_TEMPLATE.format(
-            output=serialized_last_executions, task=TASK
+            output=formatted_last_executions, task=TASK
         )
     )
     chatgpt_response = openai_client.get_chatgpt_response(prompt)

@@ -67,7 +67,7 @@ class OpenaiClient:
                     "content": prompt,
                 },
             ],
-            temperature=0.5,
+            temperature=0.9,
         )
 
         return response["choices"][0]["message"]["content"]
