@@ -31,7 +31,7 @@ INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a G
 - Default timeout is 60 seconds. If you anticipate longer execution time, split your command into multiple steps, and execute them one by one in separate prompts.
 - If the task is done, please do nothing.
 - If the task is not done, please provide further commands.
-- **IMPORTANT: look at previous commands and outputs to deduce what to do next.**
+- **IMPORTANT: look at previous commands and outputs to deduce what to do next and fix errors**
 {task}
 """
 
