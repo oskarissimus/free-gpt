@@ -68,7 +68,7 @@ def chatgpt_scheduler(event, context):
     chatgpt_response = openai_client.get_chatgpt_response(prompt)
     bigquery_client.insert_chat_record(prompt, chatgpt_response)
     code_snippets = extract_code(chatgpt_response)
-    logger.info(f"response: {repr(chatgpt_response)}")
+    logger.info(f"response: {chatgpt_response}")
     logger.info(f"Code snippets extracted from response: {code_snippets}")
 
     if count_tokens(" ".join(code_snippets)) > 500:
