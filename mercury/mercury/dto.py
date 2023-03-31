@@ -32,3 +32,6 @@ class CodeExecutionDTO(BaseModel):
 Output: {self.output}
 Error output: {self.error_output}
 Timestamp: {self.timestamp}"""
+
+    def __repr__(self):
+        return self.__str__()
