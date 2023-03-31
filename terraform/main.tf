@@ -14,6 +14,7 @@ resource "google_cloudfunctions_function" "chatgpt_scheduler" {
   source_archive_bucket = google_storage_bucket.chatgpt_function_bucket.name
   source_archive_object = google_storage_bucket_object.chatgpt_function_archive.name
   entry_point           = "chatgpt_scheduler"
+  timeout               = 540
 
   environment_variables = {
     OPENAI_API_KEY      = var.openai_api_key

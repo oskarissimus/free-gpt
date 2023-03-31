@@ -25,3 +25,11 @@ variable "gmail_username" {
 variable "gmail_password" {
   description = "The password for the Gmail account."
 }
+
+variable "vm_status" {
+  description = "The desired status of the executor instance."
+}
+
+variable "scheduler_paused" {
+  description = "Whether the scheduler should be paused."
+}

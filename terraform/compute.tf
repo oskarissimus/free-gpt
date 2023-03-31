@@ -1,9 +1,11 @@
 
 resource "google_compute_instance" "executor_instance" {
-  name                = "executor-instance"
-  machine_type        = "f1-micro"
-  zone                = var.zone
-  deletion_protection = false
+  name                      = "executor-instance"
+  machine_type              = "e2-standard-4"
+  zone                      = var.zone
+  deletion_protection       = false
+  allow_stopping_for_update = true
+  desired_status            = var.vm_status
   metadata = {
     ssh-keys = "${var.instance_username}:${file("gce_ssh_key.pub")}"
   }

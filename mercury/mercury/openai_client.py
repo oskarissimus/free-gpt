@@ -11,7 +11,10 @@ from mercury.utils import (
 
 logger = logging.getLogger(__name__)
 
-TASK = "Your task is to send an email to oskarissimus@gmail.com. You can access credentials to do so in google secret manager."
+TASK = """Your task is to send an email to oskarissimus@gmail.com.
+You can access credentials to do so in google secret manager.
+projects/682396996891/secrets/gmail_username
+projects/682396996891/secrets/gmail_password"""
 
 INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a Google Cloud instance:
 - Enclose commands between 3 backticks.
@@ -23,6 +26,7 @@ INTERACTION_SYSTEM_MESSAGE = """As a tech-savvy developer, complete tasks on a G
 - Adapt to changes or interruptions; no interactive text editors.
 - Remember, you're a creative problem-solver who can adapt. Good luck!
 - Single command should be shorter than 500 chatgpt-3.5-turbo tokens.
+- Default timeout is 60 seconds. If you anticipate longer execution time, split your command into multiple steps, and execute them one by one in separate prompts.
 """
 
 
@@ -53,7 +57,7 @@ class OpenaiClient:
         openai.api_key = self.settings.openai_api_key
 
     def get_chatgpt_response(self, prompt: str) -> str:
-        logger.info(f"Sending prompt to OpenAI: {repr(prompt)}")
+        logger.info(f"Sending prompt to OpenAI: {prompt}")
         logger.info(f"token count: {count_tokens(prompt)}")
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -63,6 +67,7 @@ class OpenaiClient:
                     "content": prompt,
                 },
             ],
+            temperature=0.5,
         )
 
         return response["choices"][0]["message"]["content"]
